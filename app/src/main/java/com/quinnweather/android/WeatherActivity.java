@@ -5,12 +5,15 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -45,6 +48,8 @@ public class WeatherActivity extends AppCompatActivity {
     private ImageView bingPicImg;
     public SwipeRefreshLayout swipeRefresh;
     private String mWeatherId;
+    private Button nanButton;
+    public DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +79,15 @@ public class WeatherActivity extends AppCompatActivity {
         sportText = findViewById(R.id.sport_text);
         bingPicImg = findViewById(R.id.bing_pic_img);
         swipeRefresh = findViewById(R.id.swipe_refresh);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        nanButton = findViewById(R.id.nav_button);
+        nanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 打开滑动菜单
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
         // 设置下拉进度条的颜色
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -136,7 +150,7 @@ public class WeatherActivity extends AppCompatActivity {
      *
      * @param weatherId
      */
-    private void requestWeather(String weatherId) {
+    public void requestWeather(String weatherId) {
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId +
                 "&key=3d40c17d07154524a94987141223d505";
         HttpUtils.sendOkHttpRequest(weatherUrl, new Callback() {
