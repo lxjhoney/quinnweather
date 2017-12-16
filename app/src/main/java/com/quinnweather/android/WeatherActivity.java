@@ -1,5 +1,6 @@
 package com.quinnweather.android;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.quinnweather.android.gson.Forecast;
 import com.quinnweather.android.gson.Weather;
+import com.quinnweather.android.service.AutoUpdateService;
 import com.quinnweather.android.util.HttpUtils;
 import com.quinnweather.android.util.Utility;
 
@@ -125,7 +127,7 @@ public class WeatherActivity extends AppCompatActivity {
         HttpUtils.sendOkHttpRequest(requestBingPic, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                e.printStackTrace();
             }
 
             @Override
@@ -231,5 +233,8 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText.setText(carWash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+        // 开启服务
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 }
